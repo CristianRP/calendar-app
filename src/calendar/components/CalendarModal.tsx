@@ -1,10 +1,11 @@
-import { useState } from 'react';
-import { addHours } from 'date-fns';
+import { ChangeEvent, FormEvent, useMemo, useState } from 'react';
+import { addHours, differenceInSeconds } from 'date-fns';
 import Modal, { Styles } from 'react-modal';
 import DatePicker from 'react-datepicker';
+import { DocumentCheckIcon } from '@heroicons/react/24/outline';
+import Swal from 'sweetalert2';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import { DocumentCheckIcon } from '@heroicons/react/24/outline';
 
 const customStyles: Styles = {
   content: {
@@ -20,21 +21,30 @@ Modal.setAppElement('#root');
 
 export const CalendarModal = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const [formSubmited, setFormSubmited] = useState(false);
+
   const [formValues, setFormValues] = useState({
-    title: 'CRistian',
+    title: 'Cristian',
     notes: 'Ramirez',
     start: new Date(),
     endDate: addHours(new Date(), 2),
   })
 
-  const onInputChange = ({ target }) => {
+  const titleClass = useMemo(() => {
+    if (!formSubmited) return;
+
+    return (formValues.title.length <= 0)
+      && 'ring-2 ring-red-600 focus:ring focus:ring-red-400'
+  }, [formValues.title, formSubmited])
+
+  const onInputChange = ({ target }:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormValues({
       ...formValues,
       [target.name]: target.value
     })
   }
 
-  const onDateChange = (event, changing) => {
+  const onDateChange = (event: Date | null, changing: string) => {
     setFormValues({
       ...formValues,
       [changing]: event
@@ -44,6 +54,22 @@ export const CalendarModal = () => {
   const onCloseModal = () => {
     console.log('closing-modal');
     setIsOpen(false);
+  }
+
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setFormSubmited(true);
+
+    const difference = differenceInSeconds(formValues.endDate, formValues.start);
+    console.log({difference});
+    if (isNaN(difference) || difference <= 0) {
+      Swal.fire('Invalid Dates', 'Check selected dates', 'error');
+      return;
+    }
+
+    if (formValues.title.length <= 0) return;
+
+    console.log(formValues);
   }
 
   return (
@@ -57,7 +83,7 @@ export const CalendarModal = () => {
     >
       <h1 className='text-2xl font-bold'>New Event</h1>
       <hr className='my-3' />
-      <form className="mx-3 mb-6">
+      <form className="mx-3 mb-6" onSubmit={ onSubmit }>
 
         <div className="flex flex-col mb-4">
           <label className='font-semibold'>Start Date & Time</label>
@@ -87,7 +113,7 @@ export const CalendarModal = () => {
           <label className='font-semibold'>Title & Notes</label>
           <input 
               type="text" 
-              className="rounded-md"
+              className={`font-semibold rounded-md ${titleClass}`}
               placeholder="Título del evento"
               name="title"
               autoComplete="off"
