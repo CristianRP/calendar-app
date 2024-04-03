@@ -20,7 +20,7 @@ interface Resource {
 }
 
 export type TCalendarEvent = {
-  _id: string;
+  _id?: string;
   title: string;
   notes: string;
   start: Date;
