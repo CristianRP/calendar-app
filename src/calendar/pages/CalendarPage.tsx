@@ -6,6 +6,7 @@ import { localizer } from '../../helpers';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useState } from 'react';
+import { useUiStore } from '../../hooks';
 
 const event = [{
   title: 'Birthday',
@@ -22,7 +23,9 @@ const event = [{
 export const CalendarPage = () => {
   const defaultView = localStorage.getItem('lastView') as View || 'week';
 
-  const [lastView, setLastView] = useState<View>(defaultView); 
+  const [lastView, setLastView] = useState<View>(defaultView);
+
+  const { openDateModal } = useUiStore();
 
   const eventStyleGetter = () => {
     const style: React.CSSProperties = {
@@ -37,8 +40,8 @@ export const CalendarPage = () => {
     }
   }
 
-  const onDoubleClick = (event) => {
-    console.log({ doubleClick: event});
+  const onDoubleClick = () => {
+    openDateModal();
   }
 
   const onSelect = (event) => {
