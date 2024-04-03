@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useMemo, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from 'react';
 import { addHours, differenceInSeconds } from 'date-fns';
 import Modal, { Styles } from 'react-modal';
 import DatePicker from 'react-datepicker';
@@ -7,6 +7,8 @@ import Swal from 'sweetalert2';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import { useUiStore } from '../../hooks';
+import { useCalendarStore } from '../../hooks/useCalendarStore';
+import { TCalendarEvent } from '../../store';
 
 const customStyles: Styles = {
   content: {
@@ -22,13 +24,20 @@ Modal.setAppElement('#root');
 
 export const CalendarModal = () => {
   const { isDateModalOpen, closeDateModal } = useUiStore();
+  const { activeEvent, onSetActiveEvent } = useCalendarStore();
   const [formSubmited, setFormSubmited] = useState(false);
 
   const [formValues, setFormValues] = useState({
-    title: 'Cristian',
-    notes: 'Ramirez',
+    _id: new Date().toISOString(),
+    title: '',
+    notes: '',
     start: new Date(),
-    endDate: addHours(new Date(), 2),
+    end: addHours(new Date(), 2),
+    bgColor: '#fafafa',
+    resource: {
+      _id: 123,
+      name: ''
+    }
   })
 
   const titleClass = useMemo(() => {
@@ -37,6 +46,15 @@ export const CalendarModal = () => {
     return (formValues.title.length <= 0)
       && 'ring-2 ring-red-600 focus:ring focus:ring-red-400'
   }, [formValues.title, formSubmited])
+
+  useEffect(() => {
+    if (activeEvent !== null) {
+      setFormValues({
+        ...activeEvent
+      })
+    }
+  }, [activeEvent])
+  
 
   const onInputChange = ({ target }:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormValues({
@@ -53,7 +71,7 @@ export const CalendarModal = () => {
   }
 
   const onCloseModal = () => {
-    console.log('closing-modal');
+    onSetActiveEvent({} as TCalendarEvent);
     closeDateModal();
   }
 
@@ -61,7 +79,7 @@ export const CalendarModal = () => {
     event.preventDefault();
     setFormSubmited(true);
 
-    const difference = differenceInSeconds(formValues.endDate, formValues.start);
+    const difference = differenceInSeconds(formValues.end, formValues.start);
     console.log({difference});
     if (isNaN(difference) || difference <= 0) {
       Swal.fire('Invalid Dates', 'Check selected dates', 'error');
@@ -101,9 +119,9 @@ export const CalendarModal = () => {
           <label className='font-semibold'>End Date & Time</label>
           <DatePicker
             minDate={ formValues.start }
-            selected={ formValues.endDate }
+            selected={ formValues.end }
             className='rounded-md w-full'
-            onChange={ (event) => onDateChange(event, 'endDate') }
+            onChange={ (event) => onDateChange(event, 'end') }
             dateFormat='Pp'
             showTimeSelect
           />
