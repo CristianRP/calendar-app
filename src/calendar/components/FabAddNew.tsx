@@ -28,7 +28,7 @@ export const FabAddNew = () => {
 
   return (
     <button
-      className='rounded-full bottom-6 bg-red-700 text-3xl p-6 fixed right-6 shadow-lg w-16 h-16'
+      className='rounded-full bottom-6 bg-blue-700 text-3xl p-6 fixed right-6 shadow-lg w-16 h-16'
       onClick={ handleClickNew }
     >
       <PlusIcon width={35} height={35} className='text-white ml-[-60%] mt-[-50%]' />

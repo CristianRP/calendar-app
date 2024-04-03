@@ -48,8 +48,26 @@ export const calendarSlice = createSlice({
     },
     setActiveEvent: (state, action: PayloadAction<TCalendarEvent>) => {
       state.activeEvent = action.payload;
+    },
+    onAddNewEvent: (state, action: PayloadAction<TCalendarEvent>) => {
+      state.events.push(action.payload);
+      state.activeEvent = {} as TCalendarEvent;
+    },
+    onUpdateEvent: (state, { payload }: PayloadAction<TCalendarEvent>) => {
+      state.events = state.events.map(event => {
+        if (event._id === payload._id) {
+          return payload
+        }
+        return event;
+      })
+    },
+    onDeleteEvent: (state) => {
+      if (state.activeEvent) {
+        state.events = state.events.filter(event => event._id !== state.activeEvent._id);
+        state.activeEvent = {} as TCalendarEvent;
+      }
     }
   }
 });
        
-export const { setEvents, setActiveEvent } = calendarSlice.actions;
+export const { setEvents, setActiveEvent, onAddNewEvent, onUpdateEvent, onDeleteEvent } = calendarSlice.actions;

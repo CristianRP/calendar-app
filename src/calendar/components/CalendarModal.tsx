@@ -20,30 +20,32 @@ const customStyles: Styles = {
   }
 }
 
+const initState: TCalendarEvent = {
+  _id: new Date().toISOString(),
+  title: '',
+  notes: '',
+  start: new Date(),
+  end: addHours(new Date(), 2),
+  bgColor: '#fafafa',
+  resource: {
+    _id: 123,
+    name: ''
+  }
+}
+
 Modal.setAppElement('#root');
 
 export const CalendarModal = () => {
   const { isDateModalOpen, closeDateModal } = useUiStore();
-  const { activeEvent, onSetActiveEvent } = useCalendarStore();
+  const { activeEvent, onSetActiveEvent, startSavingEvent } = useCalendarStore();
   const [formSubmited, setFormSubmited] = useState(false);
 
-  const [formValues, setFormValues] = useState({
-    _id: new Date().toISOString(),
-    title: '',
-    notes: '',
-    start: new Date(),
-    end: addHours(new Date(), 2),
-    bgColor: '#fafafa',
-    resource: {
-      _id: 123,
-      name: ''
-    }
-  })
+  const [formValues, setFormValues] = useState(initState)
 
   const titleClass = useMemo(() => {
     if (!formSubmited) return;
 
-    return (formValues.title.length <= 0)
+    return (!formValues.title || formValues.title?.length <= 0)
       && 'ring-2 ring-red-600 focus:ring focus:ring-red-400'
   }, [formValues.title, formSubmited])
 
@@ -75,7 +77,7 @@ export const CalendarModal = () => {
     closeDateModal();
   }
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async(event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormSubmited(true);
 
@@ -85,10 +87,16 @@ export const CalendarModal = () => {
       Swal.fire('Invalid Dates', 'Check selected dates', 'error');
       return;
     }
+    console.log(formValues);
+    console.log(formValues.title);
+    console.log(formValues.title.length);
+    
 
     if (formValues.title.length <= 0) return;
 
-    console.log(formValues);
+    await startSavingEvent(formValues);
+    closeDateModal();
+    setFormSubmited(false);
   }
 
   return (
@@ -132,7 +140,7 @@ export const CalendarModal = () => {
           <label className='font-semibold'>Title & Notes</label>
           <input 
               type="text" 
-              className={`font-semibold rounded-md ${titleClass}`}
+              className={`rounded-md ${titleClass}`}
               placeholder="Título del evento"
               name="title"
               autoComplete="off"
