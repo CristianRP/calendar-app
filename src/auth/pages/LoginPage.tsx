@@ -69,7 +69,7 @@ export const LoginPage = () => {
               <div className="w-full mb-4">
                 <input
                   type="submit"
-                  className='w-1/2 mt-2 px-4 py-2 bg-white text-blue-700 rounded-2xl hover:bg-slate-100 focus:outline-none focus:bg-white focus:ring focus:ring-blue-400 cursor-pointer'
+                  className='w-1/1.5 mt-2 px-4 py-2 bg-white text-blue-700 rounded-2xl hover:bg-slate-100 focus:outline-none focus:bg-white focus:ring focus:ring-blue-400 cursor-pointer'
                   value="Create Account" />
               </div>
             </form>
