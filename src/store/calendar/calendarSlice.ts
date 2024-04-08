@@ -1,18 +1,4 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { addHours } from 'date-fns';
-
-const tempEvent = {
-  _id: new Date().toISOString(),
-  title: 'Birthday',
-  notes: 'BUy a cake',
-  start: new Date(),
-  end: addHours(new Date(), 2),
-  bgColor: '#fafafa',
-  resource: {
-    _id: '123',
-    name: 'abc'
-  }
-}
 
 interface Resource {
   _id: string;
@@ -30,12 +16,14 @@ export type TCalendarEvent = {
 }
 
 type CalendarState = {
+  isLoadingEvents: boolean;
   events: TCalendarEvent[];
   activeEvent: TCalendarEvent;
 }
 
 const initialState: CalendarState = {
-  events: [ tempEvent ],
+  isLoadingEvents: true,
+  events: [],
   activeEvent: {} as TCalendarEvent,
 }
 
@@ -66,8 +54,17 @@ export const calendarSlice = createSlice({
         state.events = state.events.filter(event => event._id !== state.activeEvent._id);
         state.activeEvent = {} as TCalendarEvent;
       }
+    },
+    onLoadEvents: (state, { payload }: PayloadAction<TCalendarEvent[]>) => {
+      state.isLoadingEvents = false;
+      payload.forEach(event => {
+        const exists = state.events.some(dbEvent => dbEvent._id === event._id);
+        if (!exists) {
+          state.events.push(event);
+        }
+      })
     }
   }
 });
        
-export const { setEvents, setActiveEvent, onAddNewEvent, onUpdateEvent, onDeleteEvent } = calendarSlice.actions;
+export const { setEvents, setActiveEvent, onAddNewEvent, onUpdateEvent, onDeleteEvent, onLoadEvents } = calendarSlice.actions;

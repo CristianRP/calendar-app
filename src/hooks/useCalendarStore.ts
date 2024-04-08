@@ -1,5 +1,6 @@
 import { calendarApi } from '../api';
-import { TCalendarEvent, onAddNewEvent, onDeleteEvent, onUpdateEvent, setActiveEvent } from '../store';
+import { convertDateStrigToDateEvent } from '../helpers';
+import { TCalendarEvent, onAddNewEvent, onDeleteEvent, onLoadEvents, onUpdateEvent, setActiveEvent } from '../store';
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 
 export const useCalendarStore = () => {
@@ -25,6 +26,17 @@ export const useCalendarStore = () => {
     dispatch(onDeleteEvent());
   }
 
+  const startLoadingEvents = async() => {
+    try {
+      const { data } = await calendarApi.get('/events');
+      const events = convertDateStrigToDateEvent(data.events);
+      console.log(events)
+      dispatch(onLoadEvents(events as TCalendarEvent[]));
+    } catch(error) {
+      console.log(error);
+    }
+  }
+
   return {
     //* Properties
     events,
@@ -35,5 +47,6 @@ export const useCalendarStore = () => {
     onSetActiveEvent,
     startSavingEvent,
     startDeletingEvent,
+    startLoadingEvents,
   }
 }
