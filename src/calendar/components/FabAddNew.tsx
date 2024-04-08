@@ -11,7 +11,7 @@ const templateEvent: TCalendarEvent = {
   end: addHours(new Date(), 2),
   bgColor: '#fafafa',
   resource: {
-    _id: 123,
+    _id: '123',
     name: 'Cristian',
   }
 } 

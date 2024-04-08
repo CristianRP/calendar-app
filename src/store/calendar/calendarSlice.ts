@@ -63,8 +63,13 @@ export const calendarSlice = createSlice({
           state.events.push(event);
         }
       })
+    },
+    onLogoutCalendar: (state) => {
+      state.isLoadingEvents = true;
+      state.events = [];
+      state.activeEvent = {} as TCalendarEvent;
     }
   }
 });
        
-export const { setEvents, setActiveEvent, onAddNewEvent, onUpdateEvent, onDeleteEvent, onLoadEvents } = calendarSlice.actions;
+export const { setEvents, setActiveEvent, onAddNewEvent, onUpdateEvent, onDeleteEvent, onLoadEvents, onLogoutCalendar } = calendarSlice.actions;

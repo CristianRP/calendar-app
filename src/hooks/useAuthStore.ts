@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import { calendarApi } from '../api';
-import { User, clearErrorMessage, onChecking, onLogin, onLogout, useAppDispatch, useAppSelector } from '../store';
+import { User, clearErrorMessage, onChecking, onLogin, onLogout, onLogoutCalendar, useAppDispatch, useAppSelector } from '../store';
 
 export type AxiosErrorResponse = {
   data: {
@@ -72,6 +72,7 @@ export const useAuthStore = () => {
 
   const startLogout = () => {
     localStorage.clear();
+    dispatch(onLogoutCalendar());
     dispatch(onLogout(''));
   }
 
