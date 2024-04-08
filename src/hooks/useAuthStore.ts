@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 import { calendarApi } from '../api';
 import { User, clearErrorMessage, onChecking, onLogin, onLogout, useAppDispatch, useAppSelector } from '../store';
 
-type AxiosErrorResponse = {
+export type AxiosErrorResponse = {
   data: {
     msg?: string;
     errors: [

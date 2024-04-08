@@ -1,7 +1,10 @@
+import Swal from 'sweetalert2';
 import { calendarApi } from '../api';
 import { convertDateStrigToDateEvent } from '../helpers';
 import { TCalendarEvent, onAddNewEvent, onDeleteEvent, onLoadEvents, onUpdateEvent, setActiveEvent } from '../store';
 import { useAppDispatch, useAppSelector } from '../store/hooks'
+import { AxiosError } from 'axios';
+import { AxiosErrorResponse } from '.';
 
 export const useCalendarStore = () => {
   const dispatch = useAppDispatch();
@@ -13,12 +16,20 @@ export const useCalendarStore = () => {
   }
 
   const startSavingEvent = async(calendarEvent: TCalendarEvent) => {
-    if (calendarEvent._id) {
-      dispatch(onUpdateEvent({...calendarEvent}));
-    } else {
+    try {
+      if (calendarEvent._id) {
+        await calendarApi.put(`/events/${calendarEvent._id}`, calendarEvent);
+        dispatch(onUpdateEvent({...calendarEvent, resource: { name: user.name!, _id: user.uid! }}));
+        return;
+      }
+  
       const { data } = await calendarApi.post('/events', calendarEvent);
-      console.log(data)
       dispatch(onAddNewEvent({...calendarEvent, _id: data.event._id, resource: { name: user.name!, _id: user.uid! } }));
+    } catch (error) {
+      console.log(error);
+      const eventError = error as AxiosError;
+      const { data } = eventError.response! as AxiosErrorResponse;
+      Swal.fire('Error on saving event', data.msg, 'error');
     }
   }
 
@@ -30,7 +41,6 @@ export const useCalendarStore = () => {
     try {
       const { data } = await calendarApi.get('/events');
       const events = convertDateStrigToDateEvent(data.events);
-      console.log(events)
       dispatch(onLoadEvents(events as TCalendarEvent[]));
     } catch(error) {
       console.log(error);
