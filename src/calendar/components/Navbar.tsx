@@ -1,14 +1,15 @@
-import { Fragment, useContext, useState } from 'react'
+import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, CalendarDaysIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
+import { useAuthStore } from '../../hooks'
+import { UserCircleIcon } from '@heroicons/react/16/solid'
 
-const navigation = [
-  { name: 'Marvel', to: 'marvel' },
-  { name: 'DC', to: 'dc' },
-  { name: 'Search', to: 'search' },
-  { name: 'Login', to: 'login' },
-]
+type Navigation = {
+  name: string;
+  to: string;
+}
+const navigation: Navigation[] = []
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
@@ -16,17 +17,7 @@ function classNames(...classes: string[]) {
 
 export const Navbar = () => {
 
-  const [user, setUser] = useState({ name: 'Cristian' })
-  // const { user, logout } = useContext( AuthContext );
-  // const navigate = useNavigate();
-
-  // const onLogout = () => {
-  //   console.log('logout');
-  //   logout();
-  //   navigate('/login', {
-  //     replace: true
-  //   });
-  // }
+  const { startLogout, user } = useAuthStore();
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -84,11 +75,7 @@ export const Navbar = () => {
                     <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="absolute -inset-1.5" />
                       <span className="sr-only">Open user menu</span>
-                      <img
-                        className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
-                      />
+                      <UserCircleIcon className='text-white h-8 w-8' />
                     </Menu.Button>
                   </div>
                   <Transition
@@ -105,7 +92,7 @@ export const Navbar = () => {
                         {({ active }) => (
                           <a
                             href="#"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700') + ' hidden'}
                           >
                             Your Profile
                           </a>
@@ -115,7 +102,7 @@ export const Navbar = () => {
                         {({ active }) => (
                           <a
                             href="#"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700') + ' hidden'}
                           >
                             Settings
                           </a>
@@ -125,7 +112,7 @@ export const Navbar = () => {
                         {({ active }) => (
                           <a
                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                            onClick={ onLogout }
+                            onClick={ startLogout }
                           >
                             Sign out
                           </a>
