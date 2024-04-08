@@ -1,5 +1,6 @@
-import { FormEvent } from 'react'
-import { FormValidations, useForm } from '../../hooks'
+import { FormEvent, useEffect } from 'react'
+import { FormValidations, useAuthStore, useForm } from '../../hooks'
+import Swal from 'sweetalert2'
 
 type LoginFormValidations = {
   loginEmail: [() => boolean, string],
@@ -33,26 +34,50 @@ const registerFormFields = {
 const registerFormValidations: FormValidations<RegisterFormValidations> = {
   registerName: [() => true, ''],
   registerEmail: [() => true, ''],
-  registerPassword: [() => true, ''],
-  registerConfirmPassword: [() => true, ''],
+  registerPassword: [(value) => value.length > 0, 'Password is required'],
+  registerConfirmPassword: [(value) => value.length > 0, 'Confirmation Password is required'],
 }
 
 export const LoginPage = () => {
 
+  const { startLogin, startRegister, errorMessage } = useAuthStore();
+
   const { loginEmail, loginPassword, onInputChange:onLoginInputChange } = useForm(loginFormFields, loginFormValidations);
-  const { registerName, registerEmail, registerPassword, registerConfirmPassword, onInputChange:onRegisterInputChange } = useForm(registerFormFields, registerFormValidations);
+  const {
+    registerName,
+    registerEmail,
+    registerPassword,
+    registerConfirmPassword,
+    onInputChange:onRegisterInputChange,
+    registerPasswordValid,
+    registerConfirmPasswordValid,
+  } = useForm(registerFormFields, registerFormValidations);
 
   const onSubmitLogin = (event: FormEvent) => {
     event.preventDefault();
-    console.log(event);
-    console.log({loginEmail, loginPassword})
+    startLogin({ email: loginEmail, password: loginPassword })
   }
 
   const onSubmitRegister = (event: FormEvent) => {
     event.preventDefault();
-    console.log(event);
-    console.log({registerName, registerEmail, registerPassword, registerConfirmPassword})
+
+    if (registerPassword !== registerConfirmPassword) {
+      Swal.fire('Register error', 'Password and Confirm Password are not equal', 'error');
+      return;
+    }
+
+    startRegister({
+      name: registerName,
+      email: registerEmail,
+      password: registerPassword
+    });
   }
+
+  useEffect(() => {
+    if (errorMessage) {
+      Swal.fire('Authentication Error!', errorMessage, 'error');
+    }
+  }, [errorMessage])
 
   return (
     <div className="container mx-auto h-screen flex justify-center items-center">
@@ -117,7 +142,7 @@ export const LoginPage = () => {
               </div>
               <div className="w-full mb-4">
                 <input
-                  className='w-full rounded-lg'
+                  className={`w-full rounded-lg ${registerPasswordValid === '' ? '' : 'ring-1 ring-red-600 focus:ring-1 focus:ring-red-600'}`}
                   type="password"
                   name="registerPassword"
                   placeholder='Password'
@@ -127,7 +152,7 @@ export const LoginPage = () => {
               </div>
               <div className="w-full mb-4">
                 <input
-                  className='w-full rounded-lg'
+                  className={`w-full rounded-lg ${registerConfirmPasswordValid === '' ? '' : 'ring-1 ring-red-600 focus:ring-1 focus:ring-red-600'}`}
                   type="password"
                   name="registerConfirmPassword"
                   value={ registerConfirmPassword }
