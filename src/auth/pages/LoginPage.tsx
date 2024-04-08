@@ -1,16 +1,74 @@
+import { FormEvent } from 'react'
+import { FormValidations, useForm } from '../../hooks'
+
+type LoginFormValidations = {
+  loginEmail: [() => boolean, string],
+  loginPassword: [() => boolean, string],
+}
+
+const loginFormFields = {
+  loginEmail: '',
+  loginPassword: '',
+}
+
+const loginFormValidations: FormValidations<LoginFormValidations> = {
+  loginEmail: [() => true, ''],
+  loginPassword: [() => true, ''],
+}
+
+type RegisterFormValidations = {
+  registerName: [() => boolean, string],
+  registerEmail: [() => boolean, string],
+  registerPassword: [() => boolean, string],
+  registerConfirmPassword: [() => boolean, string],
+}
+
+const registerFormFields = {
+  registerName: '',
+  registerEmail: '',
+  registerPassword: '',
+  registerConfirmPassword: '',
+}
+
+const registerFormValidations: FormValidations<RegisterFormValidations> = {
+  registerName: [() => true, ''],
+  registerEmail: [() => true, ''],
+  registerPassword: [() => true, ''],
+  registerConfirmPassword: [() => true, ''],
+}
+
 export const LoginPage = () => {
+
+  const { loginEmail, loginPassword, onInputChange:onLoginInputChange } = useForm(loginFormFields, loginFormValidations);
+  const { registerName, registerEmail, registerPassword, registerConfirmPassword, onInputChange:onRegisterInputChange } = useForm(registerFormFields, registerFormValidations);
+
+  const onSubmitLogin = (event: FormEvent) => {
+    event.preventDefault();
+    console.log(event);
+    console.log({loginEmail, loginPassword})
+  }
+
+  const onSubmitRegister = (event: FormEvent) => {
+    event.preventDefault();
+    console.log(event);
+    console.log({registerName, registerEmail, registerPassword, registerConfirmPassword})
+  }
+
   return (
     <div className="container mx-auto h-screen flex justify-center items-center">
       <div className="flex flex-wrap w-full">
         <div className="w-full md:w-1/2 ">
           <div className='rounded-lg shadow-lg bg-white p-6 h-full flex flex-col justify-center'>
             <h3 className='text-center text-gray-700 text-2xl font-semibold pt-6'>Login</h3>
-            <form action="" className='p-12'>
+            <form onSubmit={ onSubmitLogin } className='p-12'>
               <div className="mb-4">
                 <input
                   className='w-full rounded-lg'
                   type="text"
                   placeholder='Email'
+                  name='loginEmail'
+                  value={ loginEmail }
+                  onChange={ onLoginInputChange }
                 />
               </div>
               <div className="mb-4">
@@ -18,7 +76,10 @@ export const LoginPage = () => {
                   className='w-full rounded-lg'
                   type="password"
                   placeholder='Password'
-                  name="password" />
+                  name="loginPassword"
+                  value={ loginPassword }
+                  onChange={ onLoginInputChange }
+                />
               </div>
               <div className="mb-4">
                 <input
@@ -33,36 +94,44 @@ export const LoginPage = () => {
         <div className="w-full md:w-1/2 ">
           <div className='rounded-lg shadow-2xl p-6 bg-gradient-to-r from-cyan-500 to-blue-500'>
             <h3 className='text-2xl text-white text-center font-semibold pt-6'>Register</h3>
-            <form action="" className='p-12'>
+            <form onSubmit={ onSubmitRegister } className='p-12'>
               <div className="w-full mb-4">
                 <input
                   className='w-full rounded-lg'
                   type="text"
-                  name="Name"
+                  name="registerName"
                   placeholder='Name'
+                  value={ registerName }
+                  onChange={ onRegisterInputChange }
                   id="name" />
               </div>
               <div className="w-full mb-4">
                 <input
                   className='w-full rounded-lg'
                     type="email"
-                    name="email"
+                    name="registerEmail"
                     placeholder='Email'
+                    value={ registerEmail }
+                    onChange={ onRegisterInputChange }
                     id="email" />
               </div>
               <div className="w-full mb-4">
                 <input
                   className='w-full rounded-lg'
                   type="password"
-                  name="password"
+                  name="registerPassword"
                   placeholder='Password'
+                  value={ registerPassword }
+                  onChange={ onRegisterInputChange }
                   id="password" />
               </div>
               <div className="w-full mb-4">
                 <input
                   className='w-full rounded-lg'
                   type="password"
-                  name="confirm-password"
+                  name="registerConfirmPassword"
+                  value={ registerConfirmPassword }
+                  onChange={ onRegisterInputChange }
                   placeholder='Confirm Password'
                   id="confirm-password" />
               </div>
