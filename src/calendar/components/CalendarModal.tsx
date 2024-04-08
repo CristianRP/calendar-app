@@ -28,7 +28,7 @@ const initState: TCalendarEvent = {
   end: addHours(new Date(), 2),
   bgColor: '#fafafa',
   resource: {
-    _id: 123,
+    _id: '123',
     name: ''
   }
 }
@@ -50,7 +50,7 @@ export const CalendarModal = () => {
   }, [formValues.title, formSubmited])
 
   useEffect(() => {
-    if (activeEvent !== null) {
+    if (Object.keys(activeEvent).length > 0) {
       setFormValues({
         ...activeEvent
       })
@@ -73,8 +73,8 @@ export const CalendarModal = () => {
   }
 
   const onCloseModal = () => {
-    onSetActiveEvent({} as TCalendarEvent);
     closeDateModal();
+    onSetActiveEvent({} as TCalendarEvent);
   }
 
   const onSubmit = async(event: FormEvent<HTMLFormElement>) => {
@@ -82,16 +82,11 @@ export const CalendarModal = () => {
     setFormSubmited(true);
 
     const difference = differenceInSeconds(formValues.end, formValues.start);
-    console.log({difference});
     if (isNaN(difference) || difference <= 0) {
       Swal.fire('Invalid Dates', 'Check selected dates', 'error');
       return;
     }
-    console.log(formValues);
-    console.log(formValues.title);
-    console.log(formValues.title.length);
     
-
     if (formValues.title.length <= 0) return;
 
     await startSavingEvent(formValues);
@@ -115,6 +110,7 @@ export const CalendarModal = () => {
         <div className="flex flex-col mb-4">
           <label className='font-semibold'>Start Date & Time</label>
           <DatePicker
+            name='start'
             selected={ formValues.start }
             className='rounded-md w-full'
             onChange={ (event) => onDateChange(event, 'start') }
@@ -126,6 +122,7 @@ export const CalendarModal = () => {
         <div className="flex flex-col mb-4">
           <label className='font-semibold'>End Date & Time</label>
           <DatePicker
+            name='end'
             minDate={ formValues.start }
             selected={ formValues.end }
             className='rounded-md w-full'

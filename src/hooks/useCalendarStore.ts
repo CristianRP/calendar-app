@@ -1,9 +1,11 @@
+import { calendarApi } from '../api';
 import { TCalendarEvent, onAddNewEvent, onDeleteEvent, onUpdateEvent, setActiveEvent } from '../store';
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 
 export const useCalendarStore = () => {
   const dispatch = useAppDispatch();
   const { events, activeEvent } = useAppSelector(state => state.calendar);
+  const { user } = useAppSelector(state => state.auth);
 
   const onSetActiveEvent = (event: TCalendarEvent) => {
     dispatch(setActiveEvent(event));
@@ -13,7 +15,9 @@ export const useCalendarStore = () => {
     if (calendarEvent._id) {
       dispatch(onUpdateEvent({...calendarEvent}));
     } else {
-      dispatch(onAddNewEvent({...calendarEvent, _id: new Date().toISOString() }));
+      const { data } = await calendarApi.post('/events', calendarEvent);
+      console.log(data)
+      dispatch(onAddNewEvent({...calendarEvent, _id: data.event._id, resource: { name: user.name!, _id: user.uid! } }));
     }
   }
 

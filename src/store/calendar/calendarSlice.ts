@@ -9,13 +9,13 @@ const tempEvent = {
   end: addHours(new Date(), 2),
   bgColor: '#fafafa',
   resource: {
-    _id: 123,
+    _id: '123',
     name: 'abc'
   }
 }
 
 interface Resource {
-  _id: number;
+  _id: string;
   name: string;
 }
 
