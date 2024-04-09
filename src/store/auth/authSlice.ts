@@ -10,7 +10,7 @@ export type User = {
   confirmPassword?: string;
 }
 
-type AuthState = {
+export type AuthState = {
   status: AuthStatus;
   user: User;
   errorMessage?: string;
