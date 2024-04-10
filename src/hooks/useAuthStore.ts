@@ -36,7 +36,8 @@ export const useAuthStore = () => {
     dispatch(onChecking());
     try {
       const { data } = await calendarApi.post('/auth/new', { name, email, password, confirmPassword });
-      console.log(data);
+      const { uid } = data;
+      dispatch(onLogin({ uid, name }));
     } catch(error) {
       const axiosError = error as AxiosError;
       const { data } = axiosError.response! as AxiosErrorResponse;
