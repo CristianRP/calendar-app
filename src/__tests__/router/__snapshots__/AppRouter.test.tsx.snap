@@ -1,0 +1,271 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Tests on <AppRouter /> > should show the calendar if user is authenticated 1`] = `
+<div>
+  <div
+    class="container mx-auto h-screen flex justify-center items-center"
+  >
+    <div
+      class="flex flex-wrap w-full"
+    >
+      <div
+        class="w-full md:w-1/2 "
+      >
+        <div
+          class="rounded-lg shadow-lg bg-white p-6 h-full flex flex-col justify-center"
+        >
+          <h3
+            class="text-center text-gray-700 text-2xl font-semibold pt-6"
+          >
+            Login
+          </h3>
+          <form
+            class="p-12"
+          >
+            <div
+              class="mb-4"
+            >
+              <input
+                class="w-full rounded-lg"
+                name="loginEmail"
+                placeholder="Email"
+                type="text"
+                value=""
+              />
+            </div>
+            <div
+              class="mb-4"
+            >
+              <input
+                class="w-full rounded-lg"
+                name="loginPassword"
+                placeholder="Password"
+                type="password"
+                value=""
+              />
+            </div>
+            <div
+              class="mb-4"
+            >
+              <input
+                class="w-1/2 mt-2 px-4 py-2 bg-blue-700 text-white rounded-2xl hover:bg-blue-600 focus:outline-none focus:bg-blue-500 focus:ring focus:ring-blue-400 cursor-pointer"
+                type="submit"
+                value="Login"
+              />
+            </div>
+          </form>
+        </div>
+      </div>
+      <div
+        class="w-full md:w-1/2 "
+      >
+        <div
+          class="rounded-lg shadow-2xl p-6 bg-gradient-to-r from-cyan-500 to-blue-500"
+        >
+          <h3
+            class="text-2xl text-white text-center font-semibold pt-6"
+          >
+            Register
+          </h3>
+          <form
+            class="p-12"
+          >
+            <div
+              class="w-full mb-4"
+            >
+              <input
+                class="w-full rounded-lg"
+                id="name"
+                name="registerName"
+                placeholder="Name"
+                type="text"
+                value=""
+              />
+            </div>
+            <div
+              class="w-full mb-4"
+            >
+              <input
+                class="w-full rounded-lg"
+                id="email"
+                name="registerEmail"
+                placeholder="Email"
+                type="email"
+                value=""
+              />
+            </div>
+            <div
+              class="w-full mb-4"
+            >
+              <input
+                class="w-full rounded-lg ring-1 ring-red-600 focus:ring-1 focus:ring-red-600"
+                id="password"
+                name="registerPassword"
+                placeholder="Password"
+                type="password"
+                value=""
+              />
+            </div>
+            <div
+              class="w-full mb-4"
+            >
+              <input
+                class="w-full rounded-lg ring-1 ring-red-600 focus:ring-1 focus:ring-red-600"
+                id="confirm-password"
+                name="registerConfirmPassword"
+                placeholder="Confirm Password"
+                type="password"
+                value=""
+              />
+            </div>
+            <div
+              class="w-full mb-4"
+            >
+              <input
+                class="w-1/1.5 mt-2 px-4 py-2 bg-white text-blue-700 rounded-2xl hover:bg-slate-100 focus:outline-none focus:bg-white focus:ring focus:ring-blue-400 cursor-pointer"
+                type="submit"
+                value="Create Account"
+              />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Tests on <AppRouter /> > should show the login if user is not authenticated 1`] = `
+<div>
+  <div
+    class="container mx-auto h-screen flex justify-center items-center"
+  >
+    <div
+      class="flex flex-wrap w-full"
+    >
+      <div
+        class="w-full md:w-1/2 "
+      >
+        <div
+          class="rounded-lg shadow-lg bg-white p-6 h-full flex flex-col justify-center"
+        >
+          <h3
+            class="text-center text-gray-700 text-2xl font-semibold pt-6"
+          >
+            Login
+          </h3>
+          <form
+            class="p-12"
+          >
+            <div
+              class="mb-4"
+            >
+              <input
+                class="w-full rounded-lg"
+                name="loginEmail"
+                placeholder="Email"
+                type="text"
+                value=""
+              />
+            </div>
+            <div
+              class="mb-4"
+            >
+              <input
+                class="w-full rounded-lg"
+                name="loginPassword"
+                placeholder="Password"
+                type="password"
+                value=""
+              />
+            </div>
+            <div
+              class="mb-4"
+            >
+              <input
+                class="w-1/2 mt-2 px-4 py-2 bg-blue-700 text-white rounded-2xl hover:bg-blue-600 focus:outline-none focus:bg-blue-500 focus:ring focus:ring-blue-400 cursor-pointer"
+                type="submit"
+                value="Login"
+              />
+            </div>
+          </form>
+        </div>
+      </div>
+      <div
+        class="w-full md:w-1/2 "
+      >
+        <div
+          class="rounded-lg shadow-2xl p-6 bg-gradient-to-r from-cyan-500 to-blue-500"
+        >
+          <h3
+            class="text-2xl text-white text-center font-semibold pt-6"
+          >
+            Register
+          </h3>
+          <form
+            class="p-12"
+          >
+            <div
+              class="w-full mb-4"
+            >
+              <input
+                class="w-full rounded-lg"
+                id="name"
+                name="registerName"
+                placeholder="Name"
+                type="text"
+                value=""
+              />
+            </div>
+            <div
+              class="w-full mb-4"
+            >
+              <input
+                class="w-full rounded-lg"
+                id="email"
+                name="registerEmail"
+                placeholder="Email"
+                type="email"
+                value=""
+              />
+            </div>
+            <div
+              class="w-full mb-4"
+            >
+              <input
+                class="w-full rounded-lg ring-1 ring-red-600 focus:ring-1 focus:ring-red-600"
+                id="password"
+                name="registerPassword"
+                placeholder="Password"
+                type="password"
+                value=""
+              />
+            </div>
+            <div
+              class="w-full mb-4"
+            >
+              <input
+                class="w-full rounded-lg ring-1 ring-red-600 focus:ring-1 focus:ring-red-600"
+                id="confirm-password"
+                name="registerConfirmPassword"
+                placeholder="Confirm Password"
+                type="password"
+                value=""
+              />
+            </div>
+            <div
+              class="w-full mb-4"
+            >
+              <input
+                class="w-1/1.5 mt-2 px-4 py-2 bg-white text-blue-700 rounded-2xl hover:bg-slate-100 focus:outline-none focus:bg-white focus:ring focus:ring-blue-400 cursor-pointer"
+                type="submit"
+                value="Create Account"
+              />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
